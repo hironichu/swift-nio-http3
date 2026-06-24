@@ -35,7 +35,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-certificates.git", branch: "swift-crypto-5.x"),
         .package(url: "https://github.com/apple/swift-nio-extras.git", from: "1.22.0"),
         .package(url: "https://github.com/apple/swift-nio-quic-helpers.git", branch: "main"),
-        .package(url: "https://github.com/apple/swift-nio-quic.git", branch: "main"),
+        .package(url: "https://github.com/hironichu/swift-nio-quic.git", branch: "feature/secp256r1-key-exchange"),
     ],
     targets: [
         .target(
