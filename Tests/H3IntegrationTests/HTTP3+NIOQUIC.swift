@@ -28,6 +28,7 @@ import struct NIOQUIC.QUICStreamCreator
 typealias QUICHTTP3ConnectionHandler = HTTP3ConnectionHandler<QUICStreamCreator>
 
 // MARK: Configure with async interface
+@available(anyAppleOS 26, *)
 extension ChannelPipeline.SynchronousOperations {
     /// Setup a HTTP/3 server pipeline on a UDP channel.
     ///
@@ -36,7 +37,6 @@ extension ChannelPipeline.SynchronousOperations {
     ///   - configuration: The ``HTTP3ServerConfiguration``.
     ///   - settings: The `HTTP3Settings` to use for all incoming connections.
     ///   - quicConfiguration: The `QUICConfiguration` to be used.
-    ///   - maximumTokenLength: The maximum length of tokens.
     ///   - metrics: The metrics.
     ///   - logger: The logger.
     ///   - inboundRequestStreamInitializer: Closure to run for each incoming stream. Must be synchronous.
@@ -47,7 +47,6 @@ extension ChannelPipeline.SynchronousOperations {
         configuration: HTTP3ServerConfiguration = .defaults,
         settings: HTTP3Settings = .init(),
         quicConfiguration: QUICConfiguration,
-        maximumTokenLength: Int = 0,
         metrics: QUICMetrics? = nil,
         logger: Logger,
         inboundRequestStreamInitializer:
@@ -67,7 +66,6 @@ extension ChannelPipeline.SynchronousOperations {
         let quicHandler = QUICHandler(
             channel: channel,
             quicConfiguration: quicConfiguration,
-            maximumTokenLength: maximumTokenLength,
             asyncVerifier: nil,
             authenticator: authenticator,
             logger: logger,
@@ -116,7 +114,6 @@ extension ChannelPipeline.SynchronousOperations {
     ///   - configuration: The ``HTTP3ClientConfiguration``.
     ///   - settings: The `HTTP3Settings` to use for all outgoing connections.
     ///   - quicConfiguration: The `QUICConfiguration` to be used.
-    ///   - maximumTokenLength: The maximum length of tokens.
     ///   - metrics: The metrics.
     ///   - logger: The logger.
     ///   - internalInboundStreamInitializer: A closure which will be called for every incoming non-push stream.
@@ -127,7 +124,6 @@ extension ChannelPipeline.SynchronousOperations {
         configuration: HTTP3ClientConfiguration = .defaults,
         settings: HTTP3Settings = .init(),
         quicConfiguration: QUICConfiguration,
-        maximumTokenLength: Int = 0,
         metrics: QUICMetrics? = nil,
         logger: Logger,
         internalInboundStreamInitializer: (
@@ -149,7 +145,6 @@ extension ChannelPipeline.SynchronousOperations {
         let quicHandler = QUICHandler(
             channel: channel,
             quicConfiguration: quicConfiguration,
-            maximumTokenLength: maximumTokenLength,
             asyncVerifier: asyncVerifier,
             authenticator: nil,
             logger: logger,
@@ -207,6 +202,7 @@ extension ChannelPipeline.SynchronousOperations {
 
 // MARK: Configure without async interface
 
+@available(anyAppleOS 26, *)
 extension ChannelPipeline.SynchronousOperations {
     /// Setup a HTTP/3 server pipeline on a UDP channel.
     ///
@@ -215,7 +211,6 @@ extension ChannelPipeline.SynchronousOperations {
     ///   - configuration: The ``HTTP3ServerConfiguration``.
     ///   - settings: The `HTTP3Settings` to use for all incoming connections.
     ///   - quicConfiguration: The `QUICConfiguration` to be used.
-    ///   - maximumTokenLength: The maximum length of tokens.
     ///   - metrics: The metrics.
     ///   - logger: The logger.
     ///   - inboundConnectionInitializer: Closure to run for each incoming connection.
@@ -227,7 +222,6 @@ extension ChannelPipeline.SynchronousOperations {
         configuration: HTTP3ServerConfiguration = .defaults,
         settings: HTTP3Settings = .init(),
         quicConfiguration: QUICConfiguration,
-        maximumTokenLength: Int = 0,
         metrics: QUICMetrics? = nil,
         logger: Logger,
         inboundConnectionInitializer: @Sendable @escaping (any Channel) -> EventLoopFuture<Void>,
@@ -251,7 +245,6 @@ extension ChannelPipeline.SynchronousOperations {
         let quicHandler = QUICHandler(
             channel: channel,
             quicConfiguration: quicConfiguration,
-            maximumTokenLength: maximumTokenLength,
             asyncVerifier: nil,
             authenticator: authenticator,
             logger: logger,
